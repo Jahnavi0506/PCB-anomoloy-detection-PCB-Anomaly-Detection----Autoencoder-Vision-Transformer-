@@ -3,7 +3,7 @@ torch
 torchvision
 timm
 numpy
-opencv-python
+opencv-python-headless
 matplotlib
 Pillow
 scikit-learn
