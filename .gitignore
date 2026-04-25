@@ -1,0 +1,29 @@
+__pycache__/
+*.pyc
+*.pyo
+.Python
+.env
+.venv/
+venv/
+
+# Model checkpoints and heavy artifacts
+*.pth
+*.pt
+outputs/
+outputs/*.onnx
+outputs/heatmap_*.png
+outputs/heatmap_s_*.png
+outputs/ckpt_*.pth
+outputs/ckpt_s_epoch*.pth
+
+# Local logs and generated data
+outputs/predictions_log.csv
+results.csv
+
+# Streamlit local config
+.streamlit/secrets.toml
+
+# Local datasets / raw assets
+stage1_anomaly/
+stage2_classification/
+*.png

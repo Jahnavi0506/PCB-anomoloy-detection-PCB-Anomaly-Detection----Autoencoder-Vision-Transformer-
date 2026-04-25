@@ -1,0 +1,72 @@
+import os
+import cv2
+import numpy as np
+
+# INPUT DATASET
+input_root = r"E:\PCB_MiniProject\stage2_classification\train"
+
+# OUTPUT DATASET
+output_root = r"E:\PCB_MiniProject\stage2_augmented\train"
+
+os.makedirs(output_root, exist_ok=True)
+
+def add_noise(img):
+    noise = np.random.normal(0, 25, img.shape).astype(np.uint8)
+    noisy_img = cv2.add(img, noise)
+    return noisy_img
+
+def brighten(img, factor=1.2):
+    bright = cv2.convertScaleAbs(img, alpha=factor, beta=0)
+    return bright
+
+def rotate(img, angle):
+    h, w = img.shape[:2]
+    center = (w // 2, h // 2)
+    M = cv2.getRotationMatrix2D(center, angle, 1.0)
+    return cv2.warpAffine(img, M, (w, h))
+
+# Process each class
+for class_name in os.listdir(input_root):
+
+    class_input_path = os.path.join(input_root, class_name)
+    class_output_path = os.path.join(output_root, class_name)
+
+    os.makedirs(class_output_path, exist_ok=True)
+
+    for filename in os.listdir(class_input_path):
+
+        img_path = os.path.join(class_input_path, filename)
+        img = cv2.imread(img_path)
+
+        if img is None:
+            continue
+
+        base_name = os.path.splitext(filename)[0]
+
+        # Save original
+        cv2.imwrite(os.path.join(class_output_path, base_name + "_orig.jpg"), img)
+
+        # Flip horizontal
+        flip_h = cv2.flip(img, 1)
+        cv2.imwrite(os.path.join(class_output_path, base_name + "_flipH.jpg"), flip_h)
+
+        # Flip vertical
+        flip_v = cv2.flip(img, 0)
+        cv2.imwrite(os.path.join(class_output_path, base_name + "_flipV.jpg"), flip_v)
+
+        # Rotate
+        rot_15 = rotate(img, 15)
+        cv2.imwrite(os.path.join(class_output_path, base_name + "_rot15.jpg"), rot_15)
+
+        rot_m15 = rotate(img, -15)
+        cv2.imwrite(os.path.join(class_output_path, base_name + "_rot-15.jpg"), rot_m15)
+
+        # Noise
+        noisy = add_noise(img)
+        cv2.imwrite(os.path.join(class_output_path, base_name + "_noise.jpg"), noisy)
+
+        # Bright
+        bright = brighten(img, 1.3)
+        cv2.imwrite(os.path.join(class_output_path, base_name + "_bright.jpg"), bright)
+
+print("✅ Data augmentation completed successfully!")
