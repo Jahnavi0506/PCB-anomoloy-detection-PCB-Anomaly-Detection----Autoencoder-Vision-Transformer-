@@ -1,9 +1,12 @@
-streamlit
-torch
-torchvision
-timm
-numpy
-opencv-python-headless
-matplotlib
-Pillow
-scikit-learn
+# Replace opencv-python with headless version
+opencv-python-headless==4.8.1.78
+
+# Keep other packages as is
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.21.0
+matplotlib>=3.4.0
+pillow>=9.0.0
+timm>=0.6.0
+scikit-learn>=1.0.0
+pandas>=1.3.0
